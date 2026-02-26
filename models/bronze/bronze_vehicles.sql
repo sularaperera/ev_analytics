@@ -1,6 +1,5 @@
 {{ config(
     materialized='incremental',
-    unique_key='OBJECTID',
     on_schema_change='append_new_columns'
 ) }}
 
@@ -48,10 +47,22 @@ WITH raw_data AS (
         -- adding meta data
         current_timestamp() AS loaded_at,
         '{{ invocation_id }}' AS load_id,
+        METADATA$FILE_ROW_NUMBER AS FILE_ROW_NUMBER,
         METADATA$FILENAME AS SOURCE_FILE
-    FROM @DEV_EV_ANALYTICS._00_STAGING.EV_CSV_STAGE/Motor_Vehicles_Register_API_dt.csv 
+
+    FROM @DEV_EV_ANALYTICS._00_STAGING.EV_CSV_STAGE/Motor_Vehicles_Register_API_dt.csv
     (FILE_FORMAT => DEV_EV_ANALYTICS._00_STAGING.CSV_FORMAT) vh
 )
+
+{% if is_incremental() %}
+
+WHERE METADATA$FILENAME NOT IN (
+    SELECT DISTINCT SOURCE_FILE
+    FROM {{ this }}
+)
+
+{% endif %}
+
 
 SELECT *
 FROM raw_data
