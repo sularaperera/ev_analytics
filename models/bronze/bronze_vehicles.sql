@@ -47,8 +47,10 @@ WITH raw_data AS (
         vh.$38 AS FC_EXTRA_URBAN,              
         -- adding meta data
         current_timestamp() AS loaded_at,
-        uuid_string() AS load_id
-    FROM @DEV_EV_ANALYTICS._00_STAGING.EV_CSV_STAGE/Motor_Vehicles_Register_API_dt.csv (FILE_FORMAT => 'csv_format') vh
+        '{{ invocation_id }}' AS load_id,
+        METADATA$FILENAME AS SOURCE_FILE
+    FROM @DEV_EV_ANALYTICS._00_STAGING.EV_CSV_STAGE/Motor_Vehicles_Register_API_dt.csv 
+    (FILE_FORMAT => DEV_EV_ANALYTICS._00_STAGING.CSV_FORMAT) vh
 )
 
 SELECT *
