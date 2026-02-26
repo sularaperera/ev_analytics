@@ -44,6 +44,9 @@ models:
 
 
 
+
+# The macro runs at the start of every dbt execution via on-run-start, ensuring infrastructure is always available.
+
 vars:
   warehouse_name: XS_WAREHOUSE
   database_name: DEV_EV_ANALYTICS
