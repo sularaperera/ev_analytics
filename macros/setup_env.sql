@@ -62,7 +62,7 @@ CREATE OR REPLACE FILE FORMAT json_format
 
 
 -- =========================
--- Named Stages
+-- Create Stages
 -- =========================
 
 -- CSV Stage
@@ -77,7 +77,7 @@ CREATE OR REPLACE STAGE ev_json_stage
 
 
 -- =========================
--- Git Integration (Secrets + API Integration)
+-- Git Integration
 -- =========================
 
 USE DATABASE {{ database_name }};
