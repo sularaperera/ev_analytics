@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: silver_stations_tbl
+    description: "Cleaned EV stations dataset with region mapping"
+
+    columns:
+
+      - name: OBJECTID
+        description: "Unique charging statio record identifier"
+        tests:
+          - not_null
+          - unique

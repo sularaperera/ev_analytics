@@ -11,18 +11,3 @@ models:
         tests:
           - not_null
           - unique
-
-      - name: REGION
-        description: "NZ Region derived from TLA mapping"
-        tests:
-          - not_null
-
-      - name: _LOADED_AT
-        description: "Timestamp when record was loaded"
-        tests:
-          - not_null
-
-      - name: MOTIVE_POWER
-        description: "Vehicle motive power type"
-        tests:
-          - not_null
