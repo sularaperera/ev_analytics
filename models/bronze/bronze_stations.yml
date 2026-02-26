@@ -1,0 +1,14 @@
+models:
+  - name: bronze_stations
+    columns:
+      - name: loaded_at
+        tests:
+          - not_null
+
+      - name: load_id
+        tests:
+          - not_null
+
+      - name: source_file
+        tests:
+          - not_null
