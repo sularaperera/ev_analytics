@@ -40,3 +40,13 @@ models:
     # Applies to all files under models/example/
     example:
       +materialized: table
+
+
+
+
+vars:
+  warehouse_name: XS_WAREHOUSE
+  database_name: DEV_EV_ANALYTICS
+
+on-run-start:
+  - "{{ setup_environment(var('warehouse_name'), var('database_name')) }}"

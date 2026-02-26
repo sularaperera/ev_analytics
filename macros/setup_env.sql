@@ -1,0 +1,76 @@
+{% macro setup_environment(
+    warehouse_name='XS_WAREHOUSE',
+    database_name='DEV_EV_ANALYTICS'
+) %}
+
+-- =========================
+-- Warehouse
+-- =========================
+
+CREATE WAREHOUSE IF NOT EXISTS {{ warehouse_name }}
+WITH 
+    WAREHOUSE_SIZE = 'X-SMALL'
+    AUTO_SUSPEND = 60
+    AUTO_RESUME = TRUE;
+
+USE WAREHOUSE {{ warehouse_name }};
+
+
+-- =========================
+-- Database
+-- =========================
+
+CREATE DATABASE IF NOT EXISTS {{ database_name }};
+USE DATABASE {{ database_name }};
+
+
+-- =========================
+-- Schemas
+-- =========================
+
+CREATE SCHEMA IF NOT EXISTS _00_STAGING;
+-- CREATE SCHEMA IF NOT EXISTS _01_BRONZE;
+-- CREATE SCHEMA IF NOT EXISTS _02_SILVER;
+-- CREATE SCHEMA IF NOT EXISTS _03_GOLD;
+-- CREATE SCHEMA IF NOT EXISTS _99_REFERENCE;
+
+-- Switch to staging schema for infra objects
+USE SCHEMA _00_STAGING;
+
+
+-- =========================
+-- File Formats
+-- =========================
+
+-- CSV Format
+CREATE OR REPLACE FILE FORMAT csv_format
+    TYPE = 'CSV'
+    FIELD_DELIMITER = ','
+    SKIP_HEADER = 1
+    NULL_IF = ('NULL', 'null', '')
+    FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+    COMMENT = 'Standard CSV format for EV Station data';
+
+-- JSON Format
+CREATE OR REPLACE FILE FORMAT json_format
+    TYPE = 'JSON'
+    STRIP_OUTER_ARRAY = TRUE
+    IGNORE_UTF8_ERRORS = TRUE
+    COMMENT = 'Standard JSON format for semi-structured EV logs';
+
+
+-- =========================
+-- Named Stages
+-- =========================
+
+-- CSV Stage
+CREATE OR REPLACE STAGE ev_csv_stage
+    FILE_FORMAT = csv_format
+    COMMENT = 'Landing zone for CSV files';
+
+-- JSON Stage
+CREATE OR REPLACE STAGE ev_json_stage
+    FILE_FORMAT = json_format
+    COMMENT = 'Landing zone for JSON files';
+
+{% endmacro %}

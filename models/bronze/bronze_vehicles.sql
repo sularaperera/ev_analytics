@@ -54,9 +54,12 @@ WITH raw_data AS (
     (FILE_FORMAT => DEV_EV_ANALYTICS._00_STAGING.CSV_FORMAT) vh
 )
 
+SELECT *
+FROM raw_data
+
 {% if is_incremental() %}
 
-WHERE METADATA$FILENAME NOT IN (
+WHERE SOURCE_FILE NOT IN (
     SELECT DISTINCT SOURCE_FILE
     FROM {{ this }}
 )
@@ -64,5 +67,3 @@ WHERE METADATA$FILENAME NOT IN (
 {% endif %}
 
 
-SELECT *
-FROM raw_data
