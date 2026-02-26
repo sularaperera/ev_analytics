@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: silver_vehicles_tbl
+    description: "Cleaned EV vehicles dataset with region mapping"
+
+    columns:
+
+      - name: OBJECTID
+        description: "Unique vehicle record identifier"
+        tests:
+          - not_null
+          - unique
