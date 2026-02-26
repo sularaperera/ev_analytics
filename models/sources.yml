@@ -1,0 +1,24 @@
+# Define Sources
+
+version: 2
+
+sources:
+
+  - name: bronze
+    database: DEV_EV_ANALYTICS
+    schema: _01_BRONZE
+
+    tables:
+      - name: VEHICLES_TBL
+      - name: STATIONS_TBL
+
+
+  - name: reference
+    database: DEV_EV_ANALYTICS
+    schema: _99_REFERENCE
+
+    tables:
+      - name: TLA_TO_REGION
+      - name: NZ_REGION_BOUNDS
+      - name: POPULATION_BY_REGION
+      - name: STATION_DISTANCES_KM
