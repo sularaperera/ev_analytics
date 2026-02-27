@@ -62,17 +62,13 @@ deduplicated AS (
             ORDER BY LOADED_AT DESC
         ) AS rn
     FROM raw_data
+    {% if is_incremental() %}
+    WHERE SOURCE_FILE NOT IN (SELECT DISTINCT SOURCE_FILE FROM {{ this }})
+    {% endif %}
 )
 
 SELECT * EXCLUDE rn
 FROM deduplicated
 WHERE rn = 1
-
-{% if is_incremental() %}
-AND (VEHICLE_ID, SOURCE_FILE, FILE_ROW_NUMBER) NOT IN (
-    SELECT VEHICLE_ID, SOURCE_FILE, FILE_ROW_NUMBER
-    FROM {{ this }}
-)
-{% endif %}
 
 
