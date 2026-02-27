@@ -1,5 +1,6 @@
 {{ config(
     materialized='incremental',
+    schema='_01_BRONZE',
     on_schema_change='append_new_columns'
 ) }}
 
