@@ -33,19 +33,17 @@ SELECT
 
 FROM @DEV_EV_ANALYTICS._00_STAGING.EV_JSON_STAGE/EV_Roam_charging_stations_data.json
 (FILE_FORMAT => DEV_EV_ANALYTICS._00_STAGING.JSON_FORMAT)
-
 ),
 
 deduplicated AS (
     SELECT *,
         ROW_NUMBER() OVER (PARTITION BY STATION_ID ORDER BY LOADED_AT DESC) AS rn
     FROM raw_json
+    {% if is_incremental() %}
+    WHERE SOURCE_FILE NOT IN (SELECT DISTINCT SOURCE_FILE FROM {{ this }})
+    {% endif %}
 )
 
 SELECT * EXCLUDE rn
 FROM deduplicated
 WHERE rn = 1
-
-{% if is_incremental() %}
-AND STATION_ID NOT IN (SELECT DISTINCT STATION_ID FROM {{ this }})
-{% endif %}
