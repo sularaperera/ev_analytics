@@ -42,7 +42,9 @@ models:
       +materialized: table
 
 
-
+seeds:
+  my_new_project:
+    +schema: _99_REFERENCE   # or whatever schema you want
 
 
 # The macro runs at the start of every dbt execution via on-run-start, ensuring infrastructure is always available.
