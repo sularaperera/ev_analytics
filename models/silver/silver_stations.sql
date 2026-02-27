@@ -96,8 +96,3 @@ QUALIFY ROW_NUMBER() OVER (
 PARTITION BY STATION_ID
 ORDER BY REGION
 ) = 1
-
-
-
--- SELECT DISTINCT dateFirstOperational
--- FROM {{ ref('bronze_stations') }}
