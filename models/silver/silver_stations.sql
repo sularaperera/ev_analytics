@@ -24,7 +24,18 @@ WITH stations AS (
         TRY_TO_DOUBLE(longitude) AS LONGITUDE,
         currentType,
         dateFirstOperational,
-        numberOfConnectors,
+        -- Convert to DATE
+        TRY_TO_DATE(dateFirstOperational,'DD/MM/YYYY') AS DATE_FIRST_OPERATIONAL,
+
+
+        -- Extract Year & Month
+        YEAR(TRY_TO_DATE(dateFirstOperational,'DD/MM/YYYY')) AS OPERATIONAL_YEAR,
+
+        MONTH(TRY_TO_DATE(dateFirstOperational,'DD/MM/YYYY')) AS OPERATIONAL_MONTH,
+
+        -- Convert connectors to integer
+        TRY_TO_NUMBER(numberOfConnectors) AS NUMBER_OF_CONNECTORS,
+
         connectorsList,
         hasChargingCost,
         GlobalID,
@@ -85,3 +96,8 @@ QUALIFY ROW_NUMBER() OVER (
 PARTITION BY STATION_ID
 ORDER BY REGION
 ) = 1
+
+
+
+-- SELECT DISTINCT dateFirstOperational
+-- FROM {{ ref('bronze_stations') }}
