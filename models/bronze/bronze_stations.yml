@@ -1,4 +1,4 @@
-# This defines data quality tests for the bronze_stations model.
+# This generic test defines data quality tests for the bronze_stations model.
 models:
   - name: bronze_stations
     columns:
