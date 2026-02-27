@@ -2,6 +2,7 @@
 config(
     materialized='incremental',
     unique_key='STATION_ID',
+    incremental_strategy='merge',
     schema='_02_SILVER',
     on_schema_change='append_new_columns'
 ) 
@@ -49,8 +50,10 @@ WITH stations AS (
 
     {% if is_incremental() %}
 
-    WHERE LOADED_AT >
-        (SELECT COALESCE(MAX(LOADED_AT),'1900-01-01') FROM {{ this }})
+    WHERE SOURCE_FILE NOT IN (
+    SELECT DISTINCT SOURCE_FILE
+    FROM {{ this }}
+    )
 
     {% endif %}
 
