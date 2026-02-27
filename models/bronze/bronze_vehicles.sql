@@ -46,25 +46,33 @@ WITH raw_data AS (
         vh.$37 AS FC_URBAN,                    
         vh.$38 AS FC_EXTRA_URBAN,              
         -- adding meta data
-        current_timestamp() AS loaded_at,
-        '{{ invocation_id }}' AS load_id,
+        current_timestamp() AS LOADED_AT,
+        '{{ invocation_id }}' AS LOAD_ID,
         METADATA$FILE_ROW_NUMBER AS FILE_ROW_NUMBER,
         METADATA$FILENAME AS SOURCE_FILE
 
     FROM @DEV_EV_ANALYTICS._00_STAGING.EV_CSV_STAGE/Motor_Vehicles_Register_API_dt.csv
     (FILE_FORMAT => DEV_EV_ANALYTICS._00_STAGING.CSV_FORMAT) vh
+),
+
+deduplicated AS (
+    SELECT *,
+        ROW_NUMBER() OVER (
+            PARTITION BY VEHICLE_ID, SOURCE_FILE, FILE_ROW_NUMBER
+            ORDER BY LOADED_AT DESC
+        ) AS rn
+    FROM raw_data
 )
 
-SELECT *
-FROM raw_data
+SELECT * EXCLUDE rn
+FROM deduplicated
+WHERE rn = 1
 
 {% if is_incremental() %}
-
-WHERE SOURCE_FILE NOT IN (
-    SELECT DISTINCT SOURCE_FILE
+AND (VEHICLE_ID, SOURCE_FILE, FILE_ROW_NUMBER) NOT IN (
+    SELECT VEHICLE_ID, SOURCE_FILE, FILE_ROW_NUMBER
     FROM {{ this }}
 )
-
 {% endif %}
 
 

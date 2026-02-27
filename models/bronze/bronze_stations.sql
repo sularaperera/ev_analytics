@@ -27,23 +27,25 @@ SELECT
     $1:GlobalID::string AS GlobalID,
     -- Add Metadata
     CURRENT_TIMESTAMP() AS LOADED_AT,
-    '{{ invocation_id }}' AS load_id,
+    '{{ invocation_id }}' AS LOAD_ID,
     METADATA$FILE_ROW_NUMBER AS FILE_ROW_NUMBER,
     METADATA$FILENAME AS SOURCE_FILE
 
 FROM @DEV_EV_ANALYTICS._00_STAGING.EV_JSON_STAGE/EV_Roam_charging_stations_data.json
 (FILE_FORMAT => DEV_EV_ANALYTICS._00_STAGING.JSON_FORMAT)
 
+),
+
+deduplicated AS (
+    SELECT *,
+        ROW_NUMBER() OVER (PARTITION BY STATION_ID ORDER BY LOADED_AT DESC) AS rn
+    FROM raw_json
+)
+
+SELECT * EXCLUDE rn
+FROM deduplicated
+WHERE rn = 1
+
 {% if is_incremental() %}
-
-WHERE METADATA$FILENAME NOT IN (
-    SELECT DISTINCT SOURCE_FILE
-    FROM {{ this }}
-)
-
+AND STATION_ID NOT IN (SELECT DISTINCT STATION_ID FROM {{ this }})
 {% endif %}
-
-)
-
-SELECT *
-FROM raw_json

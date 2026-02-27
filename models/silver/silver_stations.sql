@@ -49,12 +49,7 @@ WITH stations AS (
     FROM {{ ref('bronze_stations') }}
 
     {% if is_incremental() %}
-
-    WHERE SOURCE_FILE NOT IN (
-    SELECT DISTINCT SOURCE_FILE
-    FROM {{ this }}
-    )
-
+    WHERE STATION_ID NOT IN (SELECT STATION_ID FROM {{ this }})
     {% endif %}
 
 ),
