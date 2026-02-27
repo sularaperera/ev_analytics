@@ -1,6 +1,6 @@
 {% macro setup_environment(
-    warehouse_name='XS_WAREHOUSE',
-    database_name='DEV_EV_ANALYTICS',
+    warehouse_name,
+    database_name,
     git_username='sularaperera', 
     git_token='eyJraWQiOiI4MjcwODE4NTIyODkwMzAiLCJhbGciOiJFUzI1NiJ9.eyJwIjoiNDkyOTc5MjQ6NDkyOTc5MjQiLCJpc3MiOiJTRjoyMDAzIiwiZXhwIjoxNzc0NjM5MTM5fQ.0DiB-12FCbT7XrxeD0IVETVF8O1KJkUo9UDjNYoV9rlDcMe4YqUtTMj584g8CevtblWaaAox0_GRQ3BLJlHaJw')
 %}
@@ -93,8 +93,6 @@ CREATE OR REPLACE API INTEGRATION GIT_INT
     API_ALLOWED_PREFIXES = ('https://github.com/{{ git_username }}/')
     ENABLED = TRUE
     ALLOWED_AUTHENTICATION_SECRETS = (GIT_SECRET);
-
-
 
 {% endmacro %}
 
