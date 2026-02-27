@@ -1,3 +1,4 @@
+# This generic test defines data quality tests for the bronze_vehicles model.
 models:
   - name: bronze_vehicles
     columns:
