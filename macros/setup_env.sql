@@ -45,7 +45,7 @@ USE SCHEMA _00_STAGING;
 -- =========================
 
 -- CSV Format
-CREATE OR REPLACE FILE FORMAT csv_format
+CREATE FILE FORMAT IF NOT EXISTS csv_format
     TYPE = 'CSV'
     FIELD_DELIMITER = ','
     SKIP_HEADER = 1
@@ -53,8 +53,9 @@ CREATE OR REPLACE FILE FORMAT csv_format
     FIELD_OPTIONALLY_ENCLOSED_BY = '"'
     COMMENT = 'Standard CSV format for EV Station data';
 
+
 -- JSON Format
-CREATE OR REPLACE FILE FORMAT json_format
+CREATE FILE FORMAT IF NOT EXISTS json_format
     TYPE = 'JSON'
     STRIP_OUTER_ARRAY = TRUE
     IGNORE_UTF8_ERRORS = TRUE
@@ -66,12 +67,12 @@ CREATE OR REPLACE FILE FORMAT json_format
 -- =========================
 
 -- CSV Stage
-CREATE OR REPLACE STAGE ev_csv_stage
+CREATE STAGE IF NOT EXISTS ev_csv_stage
     FILE_FORMAT = csv_format
     COMMENT = 'Landing zone for CSV files';
 
 -- JSON Stage
-CREATE OR REPLACE STAGE ev_json_stage
+CREATE STAGE IF NOT EXISTS ev_json_stage
     FILE_FORMAT = json_format
     COMMENT = 'Landing zone for JSON files';
 

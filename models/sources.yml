@@ -1,15 +1,15 @@
-# Define Sources
+# # Define Sources
 
-version: 2
+# version: 2
 
-sources:
+# sources:
 
-  - name: reference
-    database: DEV_EV_ANALYTICS
-    schema: _99_REFERENCE
+#   - name: reference
+#     database: DEV_EV_ANALYTICS
+#     schema: _99_REFERENCE
 
-    tables:
-      - name: TLA_TO_REGION
-      - name: NZ_REGION_BOUNDS
-      - name: POPULATION_BY_REGION
-      - name: STATION_DISTANCES_KM
+#     tables:
+#       - name: TLA_TO_REGION
+#       - name: NZ_REGION_BOUNDS
+#       - name: POPULATION_BY_REGION
+#       - name: STATION_DISTANCES_KM
