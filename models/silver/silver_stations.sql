@@ -73,7 +73,6 @@ regions AS (
 region_mapping AS (
 
     SELECT
-        -- Explicit columns instead of s.* to avoid ambiguity
         s.STATION_ID,
         s.STATION_NAME,
         s.OPERATOR,
@@ -119,5 +118,5 @@ SELECT *
 FROM region_mapping
 QUALIFY ROW_NUMBER() OVER (
     PARTITION BY STATION_ID
-    ORDER BY STATION_ID ASC NULLS LAST  -- deterministic tiebreaker, not alphabetical
+    ORDER BY STATION_ID ASC NULLS LAST 
 ) = 1
