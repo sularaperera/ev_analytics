@@ -5,5 +5,5 @@
 
 # dashboard
 
-![EV Analytics Screenshot 2026-10-20 110331](images/Screenshot 2026-10-20 110331.png)
+
 
