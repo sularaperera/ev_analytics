@@ -4,6 +4,4 @@
 
 # dashboard
 
-![Dashboard 1](images/dsh_1.png)
-
-![Dashboard 2](images/dsh_2.png)
+![Dashboard 1](images/dsh_1.png)![Dashboard 2](images/dsh_2.png)
